@@ -1,12 +1,15 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
+import LanguageDropdown from './components/languageDropdown'
 
 const Home = () => {
+  const { t } = useTranslation()
   return (
     <>
       <div className="bg-primary-400 w-full px-4">
-        <div className="flex justify-center w-full">
+        <div className="flex justify-between items-center w-full">
           <Link href="/">
             <div className="flex">
               <img
@@ -17,10 +20,11 @@ const Home = () => {
                 className="self-center"
               />
               <p className="text-md md:text-xl text-white font-semibold p-3">
-                Assessment
+                {t('home.title')}
               </p>
             </div>
           </Link>
+          <LanguageDropdown />
         </div>
       </div>
 
@@ -36,16 +40,16 @@ const Home = () => {
 
       <div className="justify-center items-center flex flex-col h-[90vh] px-4">
         <p className="text-primary-700 text-4xl md:text-6xl font-semibold my-6 md:my-12 text-center">
-          Hello!
+          {t('home.hello')}
         </p>
         <p className="md:my-12 my-6 font-medium text-center px-4">
-          Welcome to your emotional assessment :)
+          {t('home.welcome')}
         </p>
         <Link
           href="/login"
           className="rounded-2xl bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-800"
         >
-          Start
+          {t('home.start')}
         </Link>
       </div>
     </>

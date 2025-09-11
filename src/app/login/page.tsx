@@ -2,7 +2,9 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
 import { ensureAnonymousSession, createStudent } from '@/services/appwrite'
+import LanguageDropdown from '../components/languageDropdown'
 
 const schools = ['Avalon Heights, Mumbai']
 
@@ -11,6 +13,7 @@ const grades = ['Grade 1']
 const sections = ['A', 'B', 'C']
 
 export default function Page() {
+  const { t } = useTranslation()
   const [formData, setFormData] = useState({
     studentName: '',
     school: schools[0],
@@ -40,7 +43,7 @@ export default function Page() {
       router.push(`/parent-questionnaire?studentId=${student.$id}`)
     } catch (err) {
       console.error(err)
-      setError('Failed to login. Please try again.')
+      setError(t('login.error'))
     } finally {
       setIsLoading(false)
     }
@@ -48,14 +51,15 @@ export default function Page() {
 
   return (
     <section>
-      <title>Tilli Assessment | Sign Up</title>
+      <title>{t('login.title')}</title>
       <div className="bg-primary-400 w-full px-4">
-        <div className="flex justify-center w-full">
+        <div className="flex justify-between items-center w-full">
           <Link href="/">
             <p className="text-md md:text-xl text-white font-semibold p-3">
-              Parent Details
+              {t('login.parentDetails')}
             </p>
           </Link>
+          <LanguageDropdown />
         </div>
       </div>
       <div className="mx-auto flex flex-col items-center justify-center px-4 md:px-6 py-4 md:py-8 text-gray-500 overflow-auto min-h-screen">
@@ -64,20 +68,20 @@ export default function Page() {
           className="rounded-xl p-4 w-full max-w-md md:max-w-lg mt-4 space-y-4 md:space-y-6"
         >
           <p className="text-center text-4xl font-semibold text-primary-700">
-            Enter Details
+            {t('login.enterDetails')}
           </p>
 
           {/* Student Name */}
           <div className="bg-white rounded-2xl p-4">
             <label className="block text-gray-700 font-semibold mb-2">
-              Please enter the child&apos;s full name (ex: Raj Patel)
+              {t('login.studentNameLabel')}
             </label>
             <input
               type="text"
               name="studentName"
               value={formData.studentName}
               onChange={handleChange}
-              placeholder="Enter student name"
+              placeholder={t('common.enterStudentName')}
               className="block w-full rounded-full bg-gray-200 p-2 px-4 text-gray-700 placeholder-gray-400 font-medium"
               required
             />
@@ -86,7 +90,7 @@ export default function Page() {
           {/* School Dropdown */}
           <div className="bg-white rounded-2xl p-4">
             <label className="block text-gray-700 font-semibold mb-2">
-              School
+              {t('login.school')}
             </label>
             <select
               name="school"
@@ -96,7 +100,7 @@ export default function Page() {
               required
             >
               <option value="" disabled>
-                Select School
+                {t('common.selectSchool')}
               </option>
               {schools.map((school) => (
                 <option key={school} value={school}>
@@ -109,7 +113,7 @@ export default function Page() {
           {/* Grade Dropdown */}
           <div className="bg-white rounded-2xl p-4">
             <label className="block text-gray-700 font-semibold mb-2">
-              Grade
+              {t('login.grade')}
             </label>
             <select
               name="grade"
@@ -119,7 +123,7 @@ export default function Page() {
               required
             >
               <option value="" disabled>
-                Select Grade
+                {t('common.selectGrade')}
               </option>
               {grades.map((grade) => (
                 <option key={grade} value={grade}>
@@ -132,7 +136,7 @@ export default function Page() {
           {/* Section Dropdown */}
           <div className="bg-white rounded-2xl p-4">
             <label className="block text-gray-700 font-semibold mb-2">
-              Section
+              {t('login.section')}
             </label>
             <select
               name="section"
@@ -142,7 +146,7 @@ export default function Page() {
               required
             >
               <option value="" disabled>
-                Select Section
+                {t('common.selectSection')}
               </option>
               {sections.map((section) => (
                 <option key={section} value={section}>
@@ -165,7 +169,7 @@ export default function Page() {
               }
               className="rounded-2xl bg-primary-700 px-6 py-2 font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-800"
             >
-              {isLoading ? 'Loading...' : 'Next'}
+              {isLoading ? t('common.loading') : t('common.next')}
             </button>
             {error && <p className="text-red-600 mt-2">{error}</p>}
           </div>
