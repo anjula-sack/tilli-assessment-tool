@@ -2,7 +2,9 @@
 import Link from 'next/link'
 import React, { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
 import Button from '../components/button'
+import LanguageDropdown from '../components/languageDropdown'
 import instruction1 from '@/assets/audios/instructions/instruction_1.mp3'
 import instruction2 from '@/assets/audios/instructions/instruction_2.mp3'
 import instruction3 from '@/assets/audios/instructions/instruction_3.mp3'
@@ -34,6 +36,7 @@ const instructionAudios = [
 ]
 
 function PageContent() {
+  const { t } = useTranslation()
   const [step, setStep] = useState(Step.PLAY)
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -60,7 +63,7 @@ function PageContent() {
 
         <div className="justify-center items-center flex flex-col h-[90vh] px-4">
           <h2 className="text-xl font-semibold text-gray-700 text-center mb-10">
-            Read the instructions carefully
+            {t('instructions.readInstructions')}
           </h2>
 
           <div className="bg-white p-4 md:p-6 rounded-xl text-left relative w-full max-w-md">
@@ -88,25 +91,22 @@ function PageContent() {
               </button>
             </div>
             <h3 className="text-lg md:text-xl font-semibold mb-4 text-gray-700 leading-snug">
-              Here are the instructions
-              <br />
-              to the assessment
+              {t('instructions.instructionsTitle')}
             </h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600 text-sm">
-              <li>Read or listen to each question carefully.</li>
-              <li>Read or listen to the options one by one.</li>
-              <li>Take your time for each question, no need to rush.</li>
+              <li>{t('instructions.instruction1')}</li>
+              <li>{t('instructions.instruction2')}</li>
+              <li>{t('instructions.instruction3')}</li>
               <li>
-                Tap on{' '}
-                <span className="inline-block align-middle">
+                {t('instructions.instruction4')}
+                <span className="inline-block align-middle ml-1">
                   <AudioIcon width={20} height={20} />
-                </span>{' '}
-                to listen.
+                </span>
               </li>
               <li>
-                Answer is only saved when you tap –
+                {t('instructions.instruction5')}
                 <span className="ml-2 px-2 py-1 rounded-full bg-primary-700 text-white text-sm font-medium">
-                  Next
+                  {t('common.next')}
                 </span>
               </li>
             </ul>
@@ -115,7 +115,7 @@ function PageContent() {
           <Button
             onClick={() => router.push(`/assessment?studentId=${studentId}`)}
           >
-            Start
+            {t('instructions.start')}
           </Button>
         </div>
       </>
@@ -137,9 +137,11 @@ function PageContent() {
 
         <div className="justify-center items-center flex flex-col h-[90vh] px-4">
           <p className="md:my-12 text-4xl md:text-6xl my-6 text-center font-medium">
-            It is the kid&apos;s turn!
+            {t('instructions.kidsTurn')}
           </p>
-          <Button onClick={() => setStep(Step.INSTRUCTIONS)}>PLAY</Button>
+          <Button onClick={() => setStep(Step.INSTRUCTIONS)}>
+            {t('instructions.play')}
+          </Button>
         </div>
       </>
     )
@@ -148,7 +150,7 @@ function PageContent() {
   return (
     <>
       <div className="bg-primary-400 w-full px-4">
-        <div className="flex justify-center w-full">
+        <div className="flex justify-between items-center w-full">
           <Link href="/">
             <div className="flex">
               <img
@@ -159,10 +161,11 @@ function PageContent() {
                 className="self-center"
               />
               <p className="text-md md:text-xl text-white font-semibold p-3">
-                Assessment
+                {t('instructions.title')}
               </p>
             </div>
           </Link>
+          <LanguageDropdown />
         </div>
       </div>
       {step === Step.PLAY && <Play />}

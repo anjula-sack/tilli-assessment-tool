@@ -3,7 +3,9 @@ import { Fredoka } from 'next/font/google'
 import './globals.css'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
-import React from 'react'
+import React, { useEffect } from 'react'
+import '@/i18n'
+import { useTranslation } from 'react-i18next'
 
 const fredoka = Fredoka({ subsets: ['latin-ext'] })
 
@@ -12,8 +14,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const { i18n } = useTranslation()
+
+  useEffect(() => {
+    // Update HTML attributes after hydration to avoid mismatch
+    document.documentElement.lang = i18n.language
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr'
+  }, [i18n.language])
+
   return (
-    <html lang="en">
+    <html lang="en" dir="ltr">
       <body
         className={`${fredoka.className} bg-primary-100 tracking-wide`}
         tabIndex={-1}

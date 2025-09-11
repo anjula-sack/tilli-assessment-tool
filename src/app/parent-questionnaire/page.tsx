@@ -2,7 +2,9 @@
 import Link from 'next/link'
 import React, { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
 import { addParentQuestionnaire } from '@/services/appwrite'
+import LanguageDropdown from '../components/languageDropdown'
 
 export default function Page() {
   return (
@@ -13,6 +15,7 @@ export default function Page() {
 }
 
 function ParentQuestionnaire() {
+  const { t } = useTranslation()
   const searchParams = useSearchParams()
   const studentId = searchParams.get('studentId')
 
@@ -60,7 +63,7 @@ function ParentQuestionnaire() {
       router.push(`/instructions?studentId=${studentId}`)
     } catch (err) {
       console.error(err)
-      setError('Failed to submit. Please try again.')
+      setError(t('parentQuestionnaire.error'))
     } finally {
       setIsLoading(false)
     }
@@ -69,78 +72,68 @@ function ParentQuestionnaire() {
   const understandingQuestions = [
     {
       key: 'q1_feelings',
-      question:
-        'Does your child tell you how they or others feel using words? (e.g., Says "I\'m scared," "I feel happy," or " you look angry")',
+      question: t('parentQuestionnaire.questions.q1'),
     },
     {
       key: 'q2_preferences',
-      question:
-        'Does your child say what they like or don\'t like in a clear way? (e.g., "I want to rest," "I don\'t like loud noise")',
+      question: t('parentQuestionnaire.questions.q2'),
     },
     {
       key: 'q3_persistence',
-      question:
-        "Does your child keep trying and finish tasks, even when they're hard? (e.g., Finishes a puzzle or keeps working after making a mistake)",
+      question: t('parentQuestionnaire.questions.q3'),
     },
     {
       key: 'q4_help_seeking',
-      question:
-        'Does your child ask an adult or friend for help when they are stuck or upset? (e.g., Says "Can you help me?" or "I need help")',
+      question: t('parentQuestionnaire.questions.q4'),
     },
     {
       key: 'q5_empathy',
-      question:
-        'Does your child notice when someone is upset and respond in a kind way? (e.g., Asks "Are you okay?" or gives a hug)',
+      question: t('parentQuestionnaire.questions.q5'),
     },
     {
       key: 'q6_comforting',
-      question:
-        'Does your child try to make someone feel better when they are sad or hurt? (e.g., Offers a hug, talks to them, or sits beside them)',
+      question: t('parentQuestionnaire.questions.q6'),
     },
     {
       key: 'q7_problem_solving',
-      question:
-        'Can your child fix problems with other children without needing an adult? (e.g., Takes turns, shares, or talks it out)',
+      question: t('parentQuestionnaire.questions.q7'),
     },
     {
       key: 'q8_self_regulation',
-      question:
-        'Does your child calm themselves down when they are upset or angry? (e.g., Takes deep breaths, walks away, or asks for help)',
+      question: t('parentQuestionnaire.questions.q8'),
     },
     {
       key: 'q9_impulse_control',
-      question:
-        'Does your child stop and think before acting when upset or excited? (e.g., Waits instead of yelling or grabbing something)',
+      question: t('parentQuestionnaire.questions.q9'),
     },
     {
       key: 'q10_self_awareness',
-      question:
-        'Does your child talk about things they\'re good at or want to improve? (e.g., "I\'m good at drawing," "I want to get better at reading")',
+      question: t('parentQuestionnaire.questions.q10'),
     },
     {
       key: 'q11_learning_goals',
-      question:
-        'Does your child talk about things they want to learn or get better at? (e.g., "I want to learn harder words")',
+      question: t('parentQuestionnaire.questions.q11'),
     },
   ]
 
   const answerOptions = [
-    'Never',
-    'Sometimes',
-    'Most of the time',
-    'Almost always',
+    t('parentQuestionnaire.never'),
+    t('parentQuestionnaire.sometimes'),
+    t('parentQuestionnaire.mostOfTheTime'),
+    t('parentQuestionnaire.almostAlways'),
   ]
 
   return (
     <section>
-      <title>Tilli Assessment | Parent Questionnaire</title>
+      <title>{t('parentQuestionnaire.title')}</title>
       <div className="bg-primary-400 w-full px-4">
-        <div className="flex justify-center w-full">
+        <div className="flex justify-between items-center w-full">
           <Link href="/">
             <p className="text-md md:text-xl text-white font-semibold p-3">
-              Parent Questionnaire
+              {t('parentQuestionnaire.navbarTitle')}
             </p>
           </Link>
+          <LanguageDropdown />
         </div>
       </div>
       <div className="mx-auto flex flex-col items-center justify-center px-4 md:px-6 py-4 md:py-8 text-gray-500 overflow-auto min-h-screen">
@@ -149,7 +142,7 @@ function ParentQuestionnaire() {
           className="rounded-xl p-4 w-full max-w-md md:max-w-lg mt-4 space-y-4 md:space-y-6"
         >
           <p className="text-center text-base font-semibold text-gray-700">
-            ONLY parents / guardians are supposed to fill this.
+            {t('parentQuestionnaire.onlyParents')}
           </p>
 
           {/* Section 1: Demographic Details */}
@@ -157,20 +150,20 @@ function ParentQuestionnaire() {
             <div className="bg-white rounded-lg shadow-sm flex items-center">
               <div className="w-4 h-12 bg-primary-400 rounded-l-lg mr-2"></div>
               <h2 className="text-md font-semibold text-gray-700">
-                SECTION 1: FILL DEMOGRAPHIC DETAILS OF YOUR CHILD
+                {t('parentQuestionnaire.section1')}
               </h2>
             </div>
 
             <div className="bg-white rounded-2xl p-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                What is your name?
+                {t('parentQuestionnaire.parentName')}
               </label>
               <input
                 type="text"
                 name={'parentName'}
                 value={formData.parentName}
                 onChange={handleChange}
-                placeholder="Your Answer"
+                placeholder={t('parentQuestionnaire.yourAnswer')}
                 className="block w-full rounded-full bg-gray-200 p-2 px-4 text-gray-700 placeholder-gray-400 font-medium"
               />
             </div>
@@ -178,7 +171,7 @@ function ParentQuestionnaire() {
             {/* Select for Sex */}
             <div className="bg-white rounded-2xl p-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                What is the sex of your child?
+                {t('parentQuestionnaire.childSex')}
               </label>
               <select
                 name="childSex"
@@ -186,17 +179,19 @@ function ParentQuestionnaire() {
                 onChange={handleChange}
                 className="block w-full rounded-full bg-gray-200 p-2 px-4 text-gray-700 font-medium"
               >
-                <option value="">Choose</option>
-                <option value="Female">Female</option>
-                <option value="Male">Male</option>
-                <option value="Other">Other</option>
+                <option value="">{t('parentQuestionnaire.choose')}</option>
+                <option value="Female">
+                  {t('parentQuestionnaire.female')}
+                </option>
+                <option value="Male">{t('parentQuestionnaire.male')}</option>
+                <option value="Other">{t('parentQuestionnaire.other')}</option>
               </select>
             </div>
 
             {/* Date of Birth */}
             <div className="bg-white rounded-2xl p-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                What is the date of birth of your child?
+                {t('parentQuestionnaire.childDob')}
               </label>
               <input
                 type="date"
@@ -211,19 +206,19 @@ function ParentQuestionnaire() {
             {[
               {
                 key: 'repeatedGrade',
-                label: 'Has your child ever repeated a grade?',
+                label: t('parentQuestionnaire.repeatedGrade'),
               },
               {
                 key: 'hearingDifficulty',
-                label: 'Does your child have HEARING DIFFICULTY?',
+                label: t('parentQuestionnaire.hearingDifficulty'),
               },
               {
                 key: 'rememberingDifficulty',
-                label: 'Does your child have REMEMBERING DIFFICULTY?',
+                label: t('parentQuestionnaire.rememberingDifficulty'),
               },
               {
                 key: 'communicationDifficulty',
-                label: 'Does your child have COMMUNICATION DIFFICULTY?',
+                label: t('parentQuestionnaire.communicationDifficulty'),
               },
             ].map(({ key, label }) => (
               <div className="bg-white rounded-2xl p-4" key={key}>
@@ -238,7 +233,7 @@ function ParentQuestionnaire() {
                       onChange={handleChange}
                       className="mr-2"
                     />
-                    Yes
+                    {t('parentQuestionnaire.yes')}
                   </label>
                   <label className="flex items-center">
                     <input
@@ -249,7 +244,7 @@ function ParentQuestionnaire() {
                       onChange={handleChange}
                       className="mr-2"
                     />
-                    No
+                    {t('parentQuestionnaire.no')}
                   </label>
                 </div>
               </div>
@@ -261,7 +256,7 @@ function ParentQuestionnaire() {
             <div className="bg-white rounded-lg shadow-sm flex items-center">
               <div className="w-4 h-12 bg-primary-400 rounded-l-lg mr-2"></div>
               <h2 className="text-md font-semibold text-gray-700">
-                SECTION 2: UNDERSTANDING YOUR CHILD
+                {t('parentQuestionnaire.section2')}
               </h2>
             </div>
 
@@ -296,7 +291,9 @@ function ParentQuestionnaire() {
               disabled={!formData.parentName || isLoading}
               className="rounded-2xl bg-primary-700 px-6 py-2 font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-800"
             >
-              {isLoading ? 'Submitting...' : 'Submit'}
+              {isLoading
+                ? t('parentQuestionnaire.submitting')
+                : t('parentQuestionnaire.submit')}
             </button>
             {error && <p className="text-red-600 mt-2">{error}</p>}
           </div>
