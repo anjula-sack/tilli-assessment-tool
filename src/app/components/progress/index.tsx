@@ -7,7 +7,7 @@ interface ProgressProps {
 export default function Progress({ current, total }: ProgressProps) {
   return (
     <div className="flex justify-center">
-      <div className="relative w-4/5 h-3 m-2 bg-yellow-200 rounded-full">
+      <div className="relative w-full h-3 m-2 bg-yellow-200 rounded-full">
         {/* Filled portion */}
         <div
           className="absolute h-3 bg-yellow-500 rounded-full z-10"

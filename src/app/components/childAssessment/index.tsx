@@ -615,8 +615,10 @@ function ChildAssessment() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="py-4 bg-primary-500 flex justify-between items-center px-4">
-        <Progress current={currentQuestion} total={questions.length} />
+      <div className="py-4 bg-primary-500 flex items-center px-4">
+        <div className="flex-1 mr-4">
+          <Progress current={currentQuestion} total={questions.length} />
+        </div>
         <LanguageDropdown />
       </div>
       <div className="w-full max-w-md mx-auto p-2 md:p-4">
