@@ -5,12 +5,23 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import Button from '../components/button'
 import LanguageDropdown from '../components/languageDropdown'
-import instruction1 from '@/assets/audios/instructions/instruction_1.mp3'
-import instruction2 from '@/assets/audios/instructions/instruction_2.mp3'
-import instruction3 from '@/assets/audios/instructions/instruction_3.mp3'
-import instruction4 from '@/assets/audios/instructions/instruction_4.mp3'
-import instruction5 from '@/assets/audios/instructions/instruction_5.mp3'
-import instruction6 from '@/assets/audios/instructions/instruction_6.mp3'
+
+// English audio files
+import instruction1 from '@/assets/audios/en/instructions/instruction_1.mp3'
+import instruction2 from '@/assets/audios/en/instructions/instruction_2.mp3'
+import instruction3 from '@/assets/audios/en/instructions/instruction_3.mp3'
+import instruction4 from '@/assets/audios/en/instructions/instruction_4.mp3'
+import instruction5 from '@/assets/audios/en/instructions/instruction_5.mp3'
+import instruction6 from '@/assets/audios/en/instructions/instruction_6.mp3'
+
+// Arabic audio files
+import instruction1Ar from '@/assets/audios/ar/instructions/instruction_1.mp3'
+import instruction2Ar from '@/assets/audios/ar/instructions/instruction_2.mp3'
+import instruction3Ar from '@/assets/audios/ar/instructions/instruction_3.mp3'
+import instruction4Ar from '@/assets/audios/ar/instructions/instruction_4.mp3'
+import instruction5Ar from '@/assets/audios/ar/instructions/instruction_5.mp3'
+import instruction6Ar from '@/assets/audios/ar/instructions/instruction_6.mp3'
+
 import AudioIcon from '@/assets/svg/AudioIcon'
 
 enum Step {
@@ -26,21 +37,27 @@ export default function Page() {
   )
 }
 
-const instructionAudios = [
-  instruction1,
-  instruction2,
-  instruction3,
-  instruction4,
-  instruction5,
-  instruction6,
-]
+const getInstructionAudios = (language: string) => {
+  const isArabic = language === 'ar'
+
+  return [
+    isArabic ? instruction1Ar : instruction1,
+    isArabic ? instruction2Ar : instruction2,
+    isArabic ? instruction3Ar : instruction3,
+    isArabic ? instruction4Ar : instruction4,
+    isArabic ? instruction5Ar : instruction5,
+    isArabic ? instruction6Ar : instruction6,
+  ]
+}
 
 function PageContent() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [step, setStep] = useState(Step.PLAY)
   const router = useRouter()
   const searchParams = useSearchParams()
   const studentId = searchParams.get('studentId')
+
+  const instructionAudios = getInstructionAudios(i18n.language)
 
   useEffect(() => {
     if (!studentId) {

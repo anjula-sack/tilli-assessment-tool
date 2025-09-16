@@ -15,7 +15,7 @@ export default function Page() {
 }
 
 function ParentQuestionnaire() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const searchParams = useSearchParams()
   const studentId = searchParams.get('studentId')
 
@@ -116,12 +116,12 @@ function ParentQuestionnaire() {
     },
   ]
 
-  const answerOptions = [
-    t('parentQuestionnaire.never'),
-    t('parentQuestionnaire.sometimes'),
-    t('parentQuestionnaire.mostOfTheTime'),
-    t('parentQuestionnaire.almostAlways'),
-  ]
+  const answerOptions = {
+    Never: t('parentQuestionnaire.never'),
+    Sometimes: t('parentQuestionnaire.sometimes'),
+    'Most of the time': t('parentQuestionnaire.mostOfTheTime'),
+    'Almost always': t('parentQuestionnaire.almostAlways'),
+  }
 
   return (
     <section>
@@ -148,7 +148,11 @@ function ParentQuestionnaire() {
           {/* Section 1: Demographic Details */}
           <div className="space-y-4">
             <div className="bg-white rounded-lg shadow-sm flex items-center">
-              <div className="w-4 h-12 bg-primary-400 rounded-l-lg mr-2"></div>
+              {i18n.language === 'en' ? (
+                <div className="w-4 h-12 bg-primary-400 rounded-l-lg mr-2"></div>
+              ) : (
+                <div className="w-4 h-12"></div>
+              )}
               <h2 className="text-md font-semibold text-gray-700">
                 {t('parentQuestionnaire.section1')}
               </h2>
@@ -254,7 +258,11 @@ function ParentQuestionnaire() {
           {/* Section 2: Understanding your child */}
           <div className="space-y-4">
             <div className="bg-white rounded-lg shadow-sm flex items-center">
-              <div className="w-4 h-12 bg-primary-400 rounded-l-lg mr-2"></div>
+              {i18n.language === 'en' ? (
+                <div className="w-4 h-12 bg-primary-400 rounded-l-lg mr-2"></div>
+              ) : (
+                <div className="w-4 h-12"></div>
+              )}
               <h2 className="text-md font-semibold text-gray-700">
                 {t('parentQuestionnaire.section2')}
               </h2>
@@ -264,7 +272,7 @@ function ParentQuestionnaire() {
               <div className="bg-white rounded-2xl p-4" key={key}>
                 <p className="text-gray-700 font-semibold mb-3">{question}</p>
                 <div className="space-y-2">
-                  {answerOptions.map((option) => (
+                  {Object.keys(answerOptions).map((option) => (
                     <label key={option} className="flex items-center">
                       <input
                         type="radio"
@@ -276,7 +284,7 @@ function ParentQuestionnaire() {
                         onChange={handleChange}
                         className="mr-2"
                       />
-                      {option}
+                      {answerOptions[option]}
                     </label>
                   ))}
                 </div>
